@@ -1,15 +1,16 @@
 package com.example.imsapi.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     private Long id;
+
+    private String name;
 
     @OneToMany(mappedBy = "user")
     private Set<Image> images;

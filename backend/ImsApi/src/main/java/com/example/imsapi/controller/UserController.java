@@ -20,7 +20,7 @@ public class UserController {
     private ImageService imageService;
 
 
-    @PostMapping("")
+    @PostMapping()
     ResponseEntity<User> createUser(@RequestBody User user) {
         try {
             User _user = userService.createUser(user);

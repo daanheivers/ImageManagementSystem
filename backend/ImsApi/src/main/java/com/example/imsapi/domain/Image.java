@@ -1,11 +1,9 @@
 package com.example.imsapi.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "images")
 public class Image {
     @Id
     private Long id;
