@@ -1,0 +1,63 @@
+/** @define tableAside */
+
+@layer components {
+    .tableAside {
+        @apply flex flex-col text-gray-700 bg-gray-100 rounded p-4;
+
+        &--no-results {
+            @apply flex justify-center items-center;
+        }
+
+        &__title {
+            @apply block text-3xl font-semibold mb-2 pb-2 truncate;
+        }
+
+        &__nameSection {
+            @apply flex flex-col;
+
+            &:not(:first-of-type) {
+                @apply mt-4;
+            }
+        }
+
+        &__nameSectionTitle {
+            @apply block text-2xl font-medium;
+        }
+
+        &__nameSectionContainer {
+            @apply h-full overflow-hidden grid grid-rows-2 mb-2;
+        }
+
+        &__nameSectionNameList {
+            @apply mt-4 overflow-auto h-full;
+        }
+
+        &__nameSectionName {
+            @apply truncate flex justify-between items-center;
+
+            &:not(:first-of-type) {
+                @apply mt-2;
+            }
+        }
+
+        &__nameSectionNameLink {
+            @apply cursor-pointer;
+        }
+
+        &__nameTitle {
+            @apply block;
+        }
+
+        &__button {
+            @apply flex w-full justify-center items-center p-4 rounded text-2xl;
+
+            &:not(:first-of-type) {
+                @apply ml-4;
+            }
+        }
+
+        &__buttonContainer {
+            @apply flex;
+        }
+    }
+}

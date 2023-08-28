@@ -1,0 +1,28 @@
+.navbar {
+    @apply top-0 h-16 bg-white shadow fixed w-full flex items-center justify-between;
+
+    height: var(--navbar-height);
+
+    &Logo {
+         @apply block object-cover h-full w-auto;
+     }
+
+    &ContentWrapper {
+         @apply block h-full;
+     }
+
+    &Content {
+         @apply flex h-full;
+     }
+
+    &ContentItem {
+         @apply h-full px-4 flex items-center justify-center cursor-pointer
+         hover:bg-gray-100 transition duration-200;
+
+         width: 7rem;
+
+    &--active {
+         @apply bg-gray-200 hover:bg-gray-200 font-bold;
+     }
+    }
+}

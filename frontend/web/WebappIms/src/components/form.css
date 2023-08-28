@@ -1,0 +1,42 @@
+@layer components {
+    .form {
+        @apply flex flex-col min-w-0 w-auto;
+
+        min-width: 25rem;
+
+        @screen sm {
+            min-width: 25rem;
+        }
+
+        &__group {
+            @apply block;
+
+            &:not(:first-of-type) {
+                @apply mt-4;
+            }
+        }
+
+        label,
+        input,
+        textarea {
+            @apply block w-full text-left;
+        }
+
+        input,
+        textarea {
+            @apply p-2 border-b-2 border-gray-300 outline-none text-gray-700 rounded-t bg-gray-100
+            focus-within:bg-gray-200 transition duration-200 focus-within:border-blue-500 focus-within:text-black;
+
+            min-height: 2rem;
+        }
+
+        label + input,
+        label + textarea {
+            @apply mt-2;
+        }
+
+        button {
+            @apply mt-4;
+        }
+    }
+}

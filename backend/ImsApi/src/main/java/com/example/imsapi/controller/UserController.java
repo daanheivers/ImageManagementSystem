@@ -1,83 +1,79 @@
 package com.example.imsapi.controller;
 
-import com.example.imsapi.domain.Image;
+import com.example.imsapi.config.UserDetailService;
 import com.example.imsapi.domain.User;
-import com.example.imsapi.service.ImageService;
 import com.example.imsapi.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private AuthenticationManager authenticationManager;
+
     @Autowired
-    private ImageService imageService;
+    private UserService userService;
 
+    @Autowired
+    private UserDetailService userDetailService;
 
-    @PostMapping()
-    ResponseEntity<User> createUser(@RequestBody User user) {
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @PostMapping("/register")
+    ResponseEntity<User> createUser(@RequestBody User userDto) {
         try {
-            User _user = userService.createUser(user);
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
+            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            User user = userService.createUser(userDto);
+
+            return new ResponseEntity<>(user, HttpStatus.CREATED);
         }
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/{userId}/images")
-    ResponseEntity<Image> saveImage(@RequestBody Image image, @PathVariable Long userId) {
+    @PostMapping("/signin")
+    ResponseEntity<?> authenticateUser(@RequestBody User userDto) {
         try {
-            Image _image = imageService.createImage(image);
-            return new ResponseEntity<>(_image, HttpStatus.CREATED);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    userDto.getUsername(), userDto.getPassword()
+            ));
 
-    @GetMapping("/{userId}/images/{imageId}")
-    ResponseEntity<Image> getImageById(@PathVariable Long userId, @PathVariable Long imageId) {
-        try {
-            Image _image = imageService.getImageById(imageId);
-            if (_image.getUser().getId().equals(userId)){
-                return new ResponseEntity<>(_image, HttpStatus.CREATED);
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+            UserDetails userDetails = userDetailService.loadUserByUsername(userDto.getUsername());
 
-    @GetMapping("/{userId}/images")
-    ResponseEntity<List<Image>> getAllImages(@PathVariable Long userId) {
-        try {
-            List<Image> _images = imageService.getAllImages();
-            return new ResponseEntity<>(_images, HttpStatus.CREATED);
-        }
-        catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    @DeleteMapping("/{userId}/images/{imageId}")
-    ResponseEntity<HttpStatus> deleteImageById(@PathVariable Long userId, @PathVariable Long imageId) {
-        try {
-            imageService.deleteImageById(imageId);
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        catch(IllegalArgumentException exc) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
         catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/logout")
+    ResponseEntity<User> logoutUser(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

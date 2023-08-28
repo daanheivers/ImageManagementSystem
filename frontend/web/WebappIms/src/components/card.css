@@ -1,0 +1,39 @@
+/** @define card */
+
+@layer components {
+    .card {
+        @apply block rounded border-2 border-gray-200 p-4 cursor-pointer
+            transition duration-200 hover:bg-gray-100;
+
+        &:not(:first-of-type) {
+            @apply mt-4;
+        }
+
+        &--inline {
+            @apply inline-block;
+
+            &:not(:first-of-type) {
+                @apply mt-0 ml-4;
+            }
+        }
+
+        &--hoverTranslate {
+            @apply transition duration-200 transform hover:-translate-y-1 hover:shadow-sm;
+        }
+
+        min-width: 2rem;
+        min-height: 2rem;
+
+        &Title {
+            @apply block object-cover h-full w-auto font-bold;
+        }
+
+        &Content {
+            @apply block h-full;
+        }
+
+        &Title + &Content {
+            @apply mt-4;
+        }
+    }
+}

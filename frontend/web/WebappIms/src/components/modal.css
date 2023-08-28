@@ -1,0 +1,36 @@
+/** @define modal */
+
+@layer components {
+    .modal {
+        @apply grid rounded bg-white;
+
+        max-height: 95vh;
+        max-width: 95vw;
+        min-width: 10rem;
+
+        &__container {
+            @apply flex justify-center items-center fixed top-0 left-0 h-full w-full bg-black bg-opacity-50;
+        }
+
+        &__header {
+            @apply flex justify-between items-center p-4 border-b border-gray-300 text-lg font-medium;
+        }
+
+        &__headerTitle {
+            @apply truncate;
+        }
+
+        &__content {
+            @apply m-4;
+        }
+
+        &__close {
+            @apply text-gray-500
+                hover:text-black transition delay-200;
+        }
+
+        &__footer {
+            @apply flex justify-end border-t border-gray-300 p-4;
+        }
+    }
+}

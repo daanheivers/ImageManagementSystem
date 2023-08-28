@@ -1,0 +1,24 @@
+@import "~tailwindcss/base.css";
+@import "~tailwindcss/components.css";
+@import "~tailwindcss/utilities.css";
+
+/* Variables */
+@import "./variables.css";
+
+/*
+ * Components
+ */
+@import "./components/card.css";
+@import "./components/form.css";
+@import "./components/button.css";
+@import "./components/table-view.css";
+@import "./components/table-aside.css";
+@import "./components/modal.css";
+
+#root {
+  @apply flex h-screen;
+}
+
+.app {
+  @apply flex pt-16 h-full w-full items-center justify-center;
+}

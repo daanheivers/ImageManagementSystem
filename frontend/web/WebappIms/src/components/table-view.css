@@ -1,0 +1,43 @@
+/** @define tableView */
+
+@layer components {
+    .tableView {
+        @apply col-span-2 overflow-auto;
+
+        &--no-items {
+            @apply flex justify-center items-center font-medium text-3xl text-gray-500;
+        }
+
+        &__item {
+            @apply flex justify-between items-center bg-gray-100 rounded p-4 text-gray-700 cursor-pointer text-xl mr-4
+                hover:bg-gray-200 transition duration-200 border-2 border-transparent;
+
+            &:not(:first-of-type) {
+                @apply mt-4;
+            }
+
+            & * {
+                @apply pointer-events-none;
+            }
+
+            &--active {
+                @apply bg-gray-200 border-gray-700
+                    hover:bg-gray-200;
+            }
+        }
+
+        &__itemName {
+            @apply mr-4;
+        }
+
+        &__itemRight {
+            @apply flex items-center;
+        }
+
+        &__container {
+            @apply grid grid-cols-3 grid-rows-1 gap-1 w-full max-w-7xl mx-4 overflow-y-hidden;
+
+            height: calc(100vh - var(--navbar-height) - 2rem);
+        }
+    }
+}
